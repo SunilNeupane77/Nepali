@@ -58,9 +58,8 @@ const (
 	IF       = "IF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
-	VAR      = "VAR"    // संख्या
-	PRINT    = "PRINT"  // लेख्नुहोस्
-	NUMBER   = "NUMBER" // ५, १०, etc.
+	VAR      = "VAR"   // संख्या
+	PRINT    = "PRINT" // लेख्नुहोस्
 )
 
 var keywords = map[string]TokenType{
@@ -75,7 +74,7 @@ var keywords = map[string]TokenType{
 	"लेख्नुहोस्": PRINT,
 }
 
-// Lexer represents a lexer for the Monkey programming language
+// Lexer represents a lexer for the Nepali programming language
 type Lexer struct {
 	input        string
 	position     int  // current position in input (points to current char)

@@ -89,4 +89,19 @@
 संख्या x = ५
 संख्या y = १०
 जोड = x + y
+लेख्नुहोस्(जोड)
+
+# Hello World program
+लेख्नुहोस्("नमस्ते संसार!")
+
+# Variable declaration
+संख्या x = ५
+संख्या y = १०
+
+# Function definition
+कार्य जोड्नुहोस्(a, b):
+    फिर्ता a + b
+
+# Using the function
+जोड = जोड्नुहोस्(x, y)
 लेख्नुहोस्(जोड) 

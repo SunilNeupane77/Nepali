@@ -20,61 +20,70 @@
 
 ## Recent Changes
 
-### 1. Build and Installation System
-The project now uses a robust build and installation system with the following components:
+### 1. Lexer Improvements
+The lexer has been updated to properly handle Nepali characters:
 
-#### Makefile Updates
-```makefile
-# Binary name
-BINARY_NAME=nepali
+#### Unicode Support
+- Added proper Unicode character handling
+- Fixed Nepali keyword recognition
+- Improved string literal handling
+- Added support for Nepali numbers
 
-# Build directory
-BUILD_DIR=bin
-
-# Installation directory
-INSTALL_DIR=/usr/local/bin
+#### Token Types
+```go
+const (
+    // Keywords
+    VAR      = "VAR"      // संख्या
+    PRINT    = "PRINT"    // लेख्नुहोस्
+)
 ```
 
-Key features:
-- Automated build process
-- Proper installation to system directories
-- Clean and uninstall capabilities
-- Installation verification
-- Error handling and checks
-
-#### Build Process
-The build process now follows these steps:
-1. Creates a `bin` directory if it doesn't exist
-2. Builds the binary with proper Go flags
-3. Places the binary in the `bin` directory
-4. Verifies the build was successful
-
-#### Installation Process
-The installation process includes:
-1. Building the binary (if not already built)
-2. Copying to system directory with proper permissions
-3. Verifying the installation
-4. Providing clear error messages if something fails
-
-### 2. Git Configuration
-Updated `.gitignore` to handle build artifacts properly:
-```gitignore
-# Allow main binary but ignore other bin contents
-bin/*
-!bin/.gitkeep
+#### Keyword Mapping
+```go
+var keywords = map[string]TokenType{
+    "संख्या":  VAR,
+    "लेख्नुहोस्": PRINT,
+}
 ```
 
-Changes include:
-- Keeping the `bin` directory in git
-- Ignoring build artifacts
-- Maintaining a clean repository
-- Allowing the main binary to be tracked if needed
+### 2. Testing
+Added comprehensive tests for Nepali language features:
 
-### 3. Directory Structure
-Added new directories and files:
-- `bin/` directory for build outputs
-- `.gitkeep` file to maintain directory structure
-- Updated documentation in `docs/`
+#### Test Cases
+- Nepali keywords
+- Nepali string literals
+- Nepali numbers
+- Unicode character handling
+
+#### Example Test
+```go
+func TestNextToken(t *testing.T) {
+    input := `संख्या x = ५
+लेख्नुहोस्("नमस्ते संसार!")`
+    // ... test cases ...
+}
+```
+
+### 3. Example Programs
+Added sample programs to demonstrate language features:
+
+#### Hello World
+```nepali
+# Hello World program
+लेख्नुहोस्("नमस्ते संसार!")
+
+# Variable declaration
+संख्या x = ५
+संख्या y = १०
+
+# Function definition
+कार्य जोड्नुहोस्(a, b):
+    फिर्ता a + b
+
+# Using the function
+जोड = जोड्नुहोस्(x, y)
+लेख्नुहोस्(जोड)
+```
 
 ## How to Use
 
@@ -94,22 +103,7 @@ make build
 make install
 ```
 
-### Available Make Commands
-- `make build`: Builds the project
-- `make install`: Installs the program
-- `make uninstall`: Removes the program
-- `make clean`: Cleans build artifacts
-- `make test`: Runs tests
-- `make verify`: Verifies installation
-- `make init`: Initializes project structure
-
-### Running the Program
-After installation:
-```bash
-nepali <filename>
-```
-
-Example:
+### Running Programs
 ```bash
 nepali examples/hello.nep
 ```
