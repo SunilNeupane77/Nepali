@@ -33,7 +33,12 @@ A Python-like programming language implementation in Go that allows writing code
 
 ## Installation
 
-For detailed installation instructions, please see the [Installation Guide](docs/INSTALL.md).
+### Prerequisites
+
+- Go 1.21 or higher
+- Git
+- Make (for build automation)
+- VS Code (recommended for development)
 
 ### Quick Installation
 
@@ -47,6 +52,94 @@ make setup
 make build
 make install
 ```
+
+### Detailed Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/SunilNeupane77/nepali.git
+   cd nepali
+   ```
+
+2. **Set Up Development Environment**
+   ```bash
+   make setup
+   ```
+   This command will:
+   - Create necessary directories
+   - Initialize Go module
+   - Set up project structure
+
+3. **Build the Project**
+   ```bash
+   make build
+   ```
+   This will create the executable in the `bin` directory.
+
+4. **Install Globally**
+   ```bash
+   make install
+   ```
+   This will install the `nepali` command globally.
+
+5. **Verify Installation**
+   ```bash
+   make verify
+   ```
+   This will check if the installation was successful.
+
+### Alternative Installation Methods
+
+#### Using Go Install
+```bash
+go install github.com/SunilNeupane77/nepali/cmd/nepali@latest
+```
+
+#### Manual Installation
+```bash
+go mod init github.com/SunilNeupane77/nepali
+go mod tidy
+go build -o bin/nepali cmd/nepali/main.go
+go install ./cmd/nepali
+```
+
+### Post-Installation Setup
+
+#### Adding to PATH
+Add Go's bin directory to your PATH:
+```bash
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+#### VS Code Setup
+1. Install the Go extension in VS Code
+2. Open the project in VS Code:
+   ```bash
+   code .
+   ```
+3. Install Go tools when prompted
+
+### Verifying Installation
+
+1. Check if the command is available:
+   ```bash
+   which nepali
+   ```
+
+2. Check the version:
+   ```bash
+   nepali --version
+   ```
+
+3. Run a test program:
+   ```bash
+   nepali examples/hello.nep
+   ```
+
+### Troubleshooting
+
+If you encounter any issues during installation, please check the [Troubleshooting Guide](docs/INSTALL.md#troubleshooting) for common solutions.
 
 ## Quick Start
 
