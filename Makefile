@@ -1,14 +1,35 @@
-.PHONY: build install test clean
+.PHONY: build install test clean init verify
 
+# Build the project
 build:
+	@echo "Building nepali..."
+	@mkdir -p bin
 	go build -o bin/nepali cmd/nepali/main.go
 
+# Install the project
 install:
+	@echo "Installing nepali..."
 	go install ./cmd/nepali
 
+# Run tests
 test:
+	@echo "Running tests..."
 	go test ./...
 
+# Clean build artifacts
 clean:
+	@echo "Cleaning build artifacts..."
 	rm -rf bin/
-	go clean 
+	go clean
+
+# Initialize the project
+init:
+	@echo "Initializing project..."
+	go mod init github.com/SunilNeupane77/nepali
+	go mod tidy
+
+# Verify installation
+verify:
+	@echo "Verifying installation..."
+	which nepali || echo "nepali not found in PATH"
+	nepali --version || echo "nepali command not working" 

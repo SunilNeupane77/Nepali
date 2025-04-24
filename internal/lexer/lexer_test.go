@@ -4,6 +4,14 @@ import (
 	"testing"
 )
 
+func TestNew(t *testing.T) {
+	input := "संख्या x = ५"
+	l := New(input)
+	if l == nil {
+		t.Fatal("New() returned nil")
+	}
+}
+
 func TestNextToken(t *testing.T) {
 	input := `संख्या x = ५
 लेख्नुहोस्(x)`

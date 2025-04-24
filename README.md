@@ -37,37 +37,63 @@ A Python-like programming language implementation in Go that allows writing code
 
 - Go 1.21 or higher
 - Git
-- Make (optional, for build automation)
+- Make (for build automation)
 
-### From Source
+### Step-by-Step Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/SunilNeupane77/nepali.git
-cd nepali
-```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/SunilNeupane77/nepali.git
+   cd nepali
+   ```
 
-2. Install dependencies:
-```bash
-go mod tidy
-```
+2. **Initialize the Project**
+   ```bash
+   make init
+   ```
+   This will:
+   - Initialize the Go module
+   - Set up the project structure
+   - Install dependencies
 
-3. Build and install:
-```bash
-make install
-```
+3. **Build the Project**
+   ```bash
+   make build
+   ```
+   This will:
+   - Create the `bin` directory
+   - Build the executable
+   - Place it in the `bin` directory
 
-### Using Go Install
+4. **Install the Package**
+   ```bash
+   make install
+   ```
+   This will:
+   - Install the package globally
+   - Make the `nepali` command available
 
+5. **Verify Installation**
+   ```bash
+   make verify
+   ```
+   This will:
+   - Check if the command is in PATH
+   - Verify the command works
+
+### Alternative Installation Methods
+
+#### Using Go Install Directly
 ```bash
 go install github.com/SunilNeupane77/nepali/cmd/nepali@latest
 ```
 
-### Verifying Installation
-
-After installation, verify that the `nepali` command is available:
+#### Manual Installation
 ```bash
-nepali --version
+go mod init github.com/SunilNeupane77/nepali
+go mod tidy
+go build -o bin/nepali cmd/nepali/main.go
+go install ./cmd/nepali
 ```
 
 ## Quick Start
@@ -169,22 +195,26 @@ Check out the `examples` directory for sample programs:
 └── Makefile           # Build automation
 ```
 
-### Building from Source
+### Development Commands
 
 ```bash
+# Initialize project
+make init
+
+# Build project
 make build
-```
 
-### Running Tests
+# Install package
+make install
 
-```bash
+# Run tests
 make test
-```
 
-### Cleaning Build Artifacts
-
-```bash
+# Clean build artifacts
 make clean
+
+# Verify installation
+make verify
 ```
 
 ### Development Setup
@@ -205,7 +235,20 @@ chmod +x .git/hooks/pre-commit
 
 ### Common Issues
 
-1. **Installation Fails**
+1. **Directory Not Found**
+   ```bash
+   stat /path/to/nepali/cmd/nepali: directory not found
+   make: *** [Makefile:7: install] Error 1
+   ```
+   Solution:
+   ```bash
+   make init
+   make clean
+   make build
+   make install
+   ```
+
+2. **Installation Fails**
    ```bash
    go: downloading github.com/SunilNeupane77/nepali v0.0.0-20250424065828-ef2424ae4aba
    go: github.com/SunilNeupane77/nepali/cmd/nepali@latest: module github.com/SunilNeupane77/nepali@latest found, but does not contain package
@@ -217,7 +260,7 @@ chmod +x .git/hooks/pre-commit
    make install
    ```
 
-2. **Command Not Found**
+3. **Command Not Found**
    ```bash
    nepali: command not found
    ```
@@ -227,7 +270,7 @@ chmod +x .git/hooks/pre-commit
    source ~/.bashrc
    ```
 
-3. **Build Errors**
+4. **Build Errors**
    ```bash
    go build: no Go files in /path/to/nepali
    ```
