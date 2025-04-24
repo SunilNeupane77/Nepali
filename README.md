@@ -1,6 +1,22 @@
 # नेपाली प्रोग्रामिङ भाषा (Nepali Programming Language)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/SunilNeupane77/nepali)](https://goreportcard.com/report/github.com/SunilNeupane77/nepali)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GoDoc](https://godoc.org/github.com/SunilNeupane77/nepali?status.svg)](https://godoc.org/github.com/SunilNeupane77/nepali)
+
 A Python-like programming language implementation in Go that allows writing code in Nepali script. This project aims to make programming more accessible to Nepali speakers by providing a familiar syntax in their native language.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Language Guide](#language-guide)
+- [Examples](#examples)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
@@ -12,13 +28,16 @@ A Python-like programming language implementation in Go that allows writing code
 - Error handling with try-except
 - Native Nepali number system support
 - Modern programming constructs
-
-## Prerequisites
-
-- Go 1.16 or higher
-- Git
+- Advanced features like generators, decorators, and async programming
 
 ## Installation
+
+### Prerequisites
+
+- Go 1.21 or higher
+- Git
+
+### From Source
 
 1. Clone the repository:
 ```bash
@@ -26,39 +45,41 @@ git clone https://github.com/SunilNeupane77/nepali.git
 cd nepali
 ```
 
-2. Install the package:
+2. Install dependencies:
 ```bash
-go install github.com/SunilNeupane77/nepali/cmd/nepali
+go mod tidy
 ```
 
-3. Verify installation:
+3. Build and install:
 ```bash
-nepali --version
+make install
 ```
 
-## Usage
+### Using Go Install
 
-### Writing Your First Program
+```bash
+go install github.com/SunilNeupane77/nepali/cmd/nepali@latest
+```
 
-Create a new file with `.nep` extension, for example `hello.nep`:
+## Quick Start
 
+1. Create a new file with `.nep` extension:
 ```nepali
-# एक सरल कार्यक्रम
+# hello.nep
 संख्या x = ५
 संख्या y = १०
 जोड = x + y
 लेख्नुहोस्(जोड)
 ```
 
-### Running Programs
-
-To run a Nepali program:
-
+2. Run the program:
 ```bash
-nepali run hello.nep
+nepali hello.nep
 ```
 
-### Language Syntax
+## Language Guide
+
+### Basic Syntax
 
 #### Variables and Data Types
 ```nepali
@@ -84,42 +105,43 @@ nepali run hello.nep
         लेख्नुहोस्(f"मेरो नाम {यो.नाम} हो")
 ```
 
-#### Control Structures
+### Advanced Features
+
+#### Generators
 ```nepali
-# If-Else
-यदि (x > y):
-    लेख्नुहोस्("x ठूलो छ")
-अन्यथा:
-    लेख्नुहोस्("y ठूलो छ")
-
-# For Loop
-लागि i मा range(५):
-    लेख्नुहोस्(i)
-
-# While Loop
-जबसम्म i < ५:
-    लेख्नुहोस्(i)
-    i = i + १
+कार्य संख्या_जेनेरेटर(सुरु, अन्त):
+    संख्या i = सुरु
+    जबसम्म i < अन्त:
+        फिर्ता i
+        i = i + १
 ```
 
-#### List Comprehensions
+#### Decorators
 ```nepali
-संख्या सूची = [x लागि x मा range(१, ११)]
-संख्या वर्ग = [x * x लागि x मा सूची]
+कार्य टाइमर(कार्य):
+    कार्य wrapper(*args, **kwargs):
+        सुरु_समय = time.time()
+        परिणाम = कार्य(*args, **kwargs)
+        अन्त_समय = time.time()
+        लेख्नुहोस्(f"कार्य सम्पन्न भयो: {अन्त_समय - सुरु_समय} सेकेन्डमा")
+        फिर्ता परिणाम
+    फिर्ता wrapper
 ```
 
-#### String Formatting
+#### Async Programming
 ```nepali
-नाम = "नेपाल"
-लेख्नुहोस्(f"मेरो देश {नाम} हो")
+कार्य async_कार्य():
+    लेख्नुहोस्("एसिन्क्रोनस कार्य सुरु भयो")
+    await asyncio.sleep(१)
+    लेख्नुहोस्("एसिन्क्रोनस कार्य सम्पन्न भयो")
 ```
 
-### Examples
+## Examples
 
-Check out the `examples` directory for more sample programs:
+Check out the `examples` directory for sample programs:
 - `hello.nep`: Basic variable operations
-- `python_features.nep`: Python-like features demonstration
-- `classes.nep`: Object-oriented programming examples
+- `student_management.nep`: Object-oriented programming example
+- `advanced_features.nep`: Advanced language features demonstration
 
 ## Development
 
@@ -133,20 +155,32 @@ Check out the `examples` directory for more sample programs:
 │   ├── parser/          # Parser implementation
 │   └── interpreter/     # Interpreter/compiler
 ├── examples/            # Example programs
-└── docs/               # Documentation
-```
-
-### Running Tests
-```bash
-go test ./...
+├── docs/               # Documentation
+├── tests/              # Test files
+└── Makefile           # Build automation
 ```
 
 ### Building from Source
+
 ```bash
-go build -o nepali cmd/nepali/main.go
+make build
+```
+
+### Running Tests
+
+```bash
+make test
+```
+
+### Cleaning Build Artifacts
+
+```bash
+make clean
 ```
 
 ## Contributing
+
+We welcome contributions! Please follow these steps:
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -154,17 +188,26 @@ go build -o nepali cmd/nepali/main.go
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+### Development Guidelines
+
+- Follow Go best practices and coding standards
+- Write tests for new features
+- Update documentation for any changes
+- Use meaningful commit messages
+- Keep the code clean and well-documented
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Inspired by Python's clean and readable syntax
-- Thanks to all contributors who help make programming more accessible
 
 ## Contact
 
 Sunil Neupane - [@SunilNeupane77](https://github.com/SunilNeupane77)
 
-Project Link: [https://github.com/SunilNeupane77/nepali](https://github.com/SunilNeupane77/nepali) 
+Project Link: [https://github.com/SunilNeupane77/nepali](https://github.com/SunilNeupane77/nepali)
+
+## Acknowledgments
+
+- Inspired by Python's clean and readable syntax
+- Thanks to all contributors who help make programming more accessible
+- Special thanks to the Go community for their excellent tools and libraries 
