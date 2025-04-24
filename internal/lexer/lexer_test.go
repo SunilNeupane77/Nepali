@@ -23,9 +23,11 @@ func TestNextToken(t *testing.T) {
 		{VAR, "संख्या"},
 		{IDENT, "x"},
 		{ASSIGN, "="},
-		{NUMBER, "५"},
+		{INT, "५"},
 		{PRINT, "लेख्नुहोस्"},
+		{LPAREN, "("},
 		{IDENT, "x"},
+		{RPAREN, ")"},
 	}
 
 	l := New(input)
