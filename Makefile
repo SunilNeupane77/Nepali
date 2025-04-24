@@ -1,4 +1,4 @@
-.PHONY: build install test clean init verify
+.PHONY: build install test clean init verify setup
 
 # Build the project
 build:
@@ -9,6 +9,7 @@ build:
 # Install the project
 install:
 	@echo "Installing nepali..."
+	@mkdir -p $(shell go env GOPATH)/bin
 	go install ./cmd/nepali
 
 # Run tests
@@ -32,4 +33,12 @@ init:
 verify:
 	@echo "Verifying installation..."
 	which nepali || echo "nepali not found in PATH"
-	nepali --version || echo "nepali command not working" 
+	nepali --version || echo "nepali command not working"
+
+# Setup development environment
+setup:
+	@echo "Setting up development environment..."
+	@mkdir -p cmd/nepali internal/lexer internal/parser internal/interpreter examples docs tests bin
+	@go mod init github.com/SunilNeupane77/nepali
+	@go mod tidy
+	@echo "Development environment setup complete" 

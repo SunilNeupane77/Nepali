@@ -33,67 +33,19 @@ A Python-like programming language implementation in Go that allows writing code
 
 ## Installation
 
-### Prerequisites
+For detailed installation instructions, please see the [Installation Guide](docs/INSTALL.md).
 
-- Go 1.21 or higher
-- Git
-- Make (for build automation)
+### Quick Installation
 
-### Step-by-Step Installation
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/SunilNeupane77/nepali.git
-   cd nepali
-   ```
-
-2. **Initialize the Project**
-   ```bash
-   make init
-   ```
-   This will:
-   - Initialize the Go module
-   - Set up the project structure
-   - Install dependencies
-
-3. **Build the Project**
-   ```bash
-   make build
-   ```
-   This will:
-   - Create the `bin` directory
-   - Build the executable
-   - Place it in the `bin` directory
-
-4. **Install the Package**
-   ```bash
-   make install
-   ```
-   This will:
-   - Install the package globally
-   - Make the `nepali` command available
-
-5. **Verify Installation**
-   ```bash
-   make verify
-   ```
-   This will:
-   - Check if the command is in PATH
-   - Verify the command works
-
-### Alternative Installation Methods
-
-#### Using Go Install Directly
 ```bash
-go install github.com/SunilNeupane77/nepali/cmd/nepali@latest
-```
+# Clone the repository
+git clone https://github.com/SunilNeupane77/nepali.git
+cd nepali
 
-#### Manual Installation
-```bash
-go mod init github.com/SunilNeupane77/nepali
-go mod tidy
-go build -o bin/nepali cmd/nepali/main.go
-go install ./cmd/nepali
+# Set up and install
+make setup
+make build
+make install
 ```
 
 ## Quick Start
