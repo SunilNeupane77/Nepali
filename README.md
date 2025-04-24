@@ -14,6 +14,7 @@ A Python-like programming language implementation in Go that allows writing code
 - [Language Guide](#language-guide)
 - [Examples](#examples)
 - [Development](#development)
+- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -36,6 +37,7 @@ A Python-like programming language implementation in Go that allows writing code
 
 - Go 1.21 or higher
 - Git
+- Make (optional, for build automation)
 
 ### From Source
 
@@ -59,6 +61,13 @@ make install
 
 ```bash
 go install github.com/SunilNeupane77/nepali/cmd/nepali@latest
+```
+
+### Verifying Installation
+
+After installation, verify that the `nepali` command is available:
+```bash
+nepali --version
 ```
 
 ## Quick Start
@@ -178,6 +187,73 @@ make test
 make clean
 ```
 
+### Development Setup
+
+1. Install development tools:
+```bash
+go install golang.org/x/tools/cmd/godoc@latest
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+```
+
+2. Set up pre-commit hooks:
+```bash
+cp .git/hooks/pre-commit.sample .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Installation Fails**
+   ```bash
+   go: downloading github.com/SunilNeupane77/nepali v0.0.0-20250424065828-ef2424ae4aba
+   go: github.com/SunilNeupane77/nepali/cmd/nepali@latest: module github.com/SunilNeupane77/nepali@latest found, but does not contain package
+   ```
+   Solution:
+   ```bash
+   go mod tidy
+   make clean
+   make install
+   ```
+
+2. **Command Not Found**
+   ```bash
+   nepali: command not found
+   ```
+   Solution: Ensure your Go bin directory is in your PATH:
+   ```bash
+   echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+3. **Build Errors**
+   ```bash
+   go build: no Go files in /path/to/nepali
+   ```
+   Solution: Ensure you're in the correct directory and all files are present:
+   ```bash
+   ls -la cmd/nepali/
+   go mod tidy
+   ```
+
+### Debugging
+
+1. Enable verbose output:
+```bash
+go build -v ./cmd/nepali
+```
+
+2. Check module status:
+```bash
+go mod verify
+```
+
+3. View module graph:
+```bash
+go mod graph
+```
+
 ## Contributing
 
 We welcome contributions! Please follow these steps:
@@ -195,6 +271,12 @@ We welcome contributions! Please follow these steps:
 - Update documentation for any changes
 - Use meaningful commit messages
 - Keep the code clean and well-documented
+
+### Code Style
+
+- Use `gofmt` for code formatting
+- Run `golangci-lint` for code quality checks
+- Follow the [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
 
 ## License
 

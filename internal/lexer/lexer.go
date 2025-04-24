@@ -1,3 +1,4 @@
+// Package lexer implements the lexical analyzer for the Nepali programming language
 package lexer
 
 import (
