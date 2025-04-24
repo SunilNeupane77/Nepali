@@ -5,6 +5,7 @@
 *.so
 *.dylib
 nepali
+bin/
 
 # Test binary, built with `go test -c`
 *.test
@@ -13,7 +14,7 @@ nepali
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 # Go workspace file
 go.work
@@ -23,7 +24,66 @@ go.work
 .vscode/
 *.swp
 *.swo
+*~
 
 # OS specific files
 .DS_Store
-Thumbs.db 
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Log files
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+tmp/
+temp/
+
+# Debug files
+debug
+debug.test
+
+# Profiling files
+*.prof
+*.trace
+
+# Local development files
+local.*
+*.local
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Generated documentation
+docs/generated/
+
+# Cache directories
+.cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Coverage reports
+coverage/
+coverage.txt
+coverage.html
+
+# Dependency lock files (uncomment if you want to ignore them)
+# go.sum
+
+# Binary output directory
+bin/ 
