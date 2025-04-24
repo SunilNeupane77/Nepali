@@ -1,15 +1,17 @@
 # नेपाली प्रोग्रामिङ भाषा (Nepali Programming Language)
 
-A programming language implementation in Go that allows writing code in Nepali script. This project aims to make programming more accessible to Nepali speakers by providing a familiar syntax in their native language.
+A Python-like programming language implementation in Go that allows writing code in Nepali script. This project aims to make programming more accessible to Nepali speakers by providing a familiar syntax in their native language.
 
 ## Features
 
-- Lexical analysis of Nepali text
-- Basic syntax parsing
-- Support for Nepali keywords and operators
-- Simple variable declarations and arithmetic operations
-- Support for control structures (if-else, loops)
+- Python-like syntax with Nepali keywords
+- Indentation-based block structure
+- Support for functions and classes
+- List comprehensions and dictionary support
+- String formatting and methods
+- Error handling with try-except
 - Native Nepali number system support
+- Modern programming constructs
 
 ## Prerequisites
 
@@ -58,41 +60,66 @@ nepali run hello.nep
 
 ### Language Syntax
 
-#### Variables
+#### Variables and Data Types
 ```nepali
 संख्या x = ५  # Number variable
 पाठ नाम = "नेपाल"  # String variable
+सूची = [१, २, ३]  # List
+शब्दकोश = {"नाम": "नेपाल"}  # Dictionary
+```
+
+#### Functions
+```nepali
+कार्य जोड्नुहोस्(a, b):
+    फिर्ता a + b
+```
+
+#### Classes
+```nepali
+वर्ग व्यक्ति:
+    कार्य __init__(यो, नाम):
+        यो.नाम = नाम
+    
+    कार्य परिचय(यो):
+        लेख्नुहोस्(f"मेरो नाम {यो.नाम} हो")
 ```
 
 #### Control Structures
 ```nepali
 # If-Else
-यदि (x > y) {
+यदि (x > y):
     लेख्नुहोस्("x ठूलो छ")
-} अन्यथा {
+अन्यथा:
     लेख्नुहोस्("y ठूलो छ")
-}
 
-# Loops
-लूप (i <= ५) {
+# For Loop
+लागि i मा range(५):
+    लेख्नुहोस्(i)
+
+# While Loop
+जबसम्म i < ५:
     लेख्नुहोस्(i)
     i = i + १
-}
 ```
 
-#### Operators
-- Addition: `+`
-- Subtraction: `-`
-- Multiplication: `*`
-- Division: `/`
-- Assignment: `=`
+#### List Comprehensions
+```nepali
+संख्या सूची = [x लागि x मा range(१, ११)]
+संख्या वर्ग = [x * x लागि x मा सूची]
+```
+
+#### String Formatting
+```nepali
+नाम = "नेपाल"
+लेख्नुहोस्(f"मेरो देश {नाम} हो")
+```
 
 ### Examples
 
 Check out the `examples` directory for more sample programs:
 - `hello.nep`: Basic variable operations
-- `loop.nep`: Loop examples
-- `conditional.nep`: If-else examples
+- `python_features.nep`: Python-like features demonstration
+- `classes.nep`: Object-oriented programming examples
 
 ## Development
 
@@ -133,7 +160,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Inspired by the need for programming languages in native scripts
+- Inspired by Python's clean and readable syntax
 - Thanks to all contributors who help make programming more accessible
 
 ## Contact

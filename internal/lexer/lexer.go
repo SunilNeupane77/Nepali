@@ -23,15 +23,50 @@ const (
 	MULTIPLY // *
 	DIVIDE   // /
 	ASSIGN   // =
+	EQ       // ==
+	NEQ      // !=
+	LT       // <
+	GT       // >
+	LTE      // <=
+	GTE      // >=
+	AND      // र
+	OR       // वा
+	NOT      // होइन
+
+	// Delimiters
+	LPAREN    // (
+	RPAREN    // )
+	LBRACE    // {
+	RBRACE    // }
+	LBRACKET  // [
+	RBRACKET  // ]
+	COMMA     // ,
+	DOT       // .
+	COLON     // :
+	SEMICOLON // ;
 
 	// Keywords
-	VAR   // संख्या
-	PRINT // लेख्नुहोस्
-	IF    // यदि
-	ELSE  // अन्यथा
-	LOOP  // लूप
-	TRUE  // सत्य
-	FALSE // असत्य
+	VAR      // संख्या
+	PRINT    // लेख्नुहोस्
+	IF       // यदि
+	ELSE     // अन्यथा
+	LOOP     // लूप
+	TRUE     // सत्य
+	FALSE    // असत्य
+	FUNCTION // कार्य
+	RETURN   // फिर्ता
+	BREAK    // ब्रेक
+	CONTINUE // जारी
+	IN       // मा
+	FOR      // लागि
+	WHILE    // जबसम्म
+	CLASS    // वर्ग
+	NEW      // नयाँ
+	THIS     // यो
+	SUPER    // माथिल्लो
+	IMPORT   // आयात
+	FROM     // बाट
+	AS       // जस्तो
 )
 
 // Token represents a lexical token
@@ -50,6 +85,7 @@ type Lexer struct {
 	ch           rune // current char under examination
 	line         int  // current line number
 	column       int  // current column number
+	indentLevel  int  // current indentation level
 }
 
 // New creates a new Lexer
@@ -83,7 +119,33 @@ func (l *Lexer) NextToken() Token {
 
 	switch l.ch {
 	case '=':
-		tok = Token{Type: ASSIGN, Literal: "=", Line: l.line, Column: l.column}
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = Token{Type: EQ, Literal: "==", Line: l.line, Column: l.column}
+		} else {
+			tok = Token{Type: ASSIGN, Literal: "=", Line: l.line, Column: l.column}
+		}
+	case '!':
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = Token{Type: NEQ, Literal: "!=", Line: l.line, Column: l.column}
+		} else {
+			tok = Token{Type: NOT, Literal: "!", Line: l.line, Column: l.column}
+		}
+	case '<':
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = Token{Type: LTE, Literal: "<=", Line: l.line, Column: l.column}
+		} else {
+			tok = Token{Type: LT, Literal: "<", Line: l.line, Column: l.column}
+		}
+	case '>':
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = Token{Type: GTE, Literal: ">=", Line: l.line, Column: l.column}
+		} else {
+			tok = Token{Type: GT, Literal: ">", Line: l.line, Column: l.column}
+		}
 	case '+':
 		tok = Token{Type: PLUS, Literal: "+", Line: l.line, Column: l.column}
 	case '-':
@@ -92,6 +154,32 @@ func (l *Lexer) NextToken() Token {
 		tok = Token{Type: MULTIPLY, Literal: "*", Line: l.line, Column: l.column}
 	case '/':
 		tok = Token{Type: DIVIDE, Literal: "/", Line: l.line, Column: l.column}
+	case '(':
+		tok = Token{Type: LPAREN, Literal: "(", Line: l.line, Column: l.column}
+	case ')':
+		tok = Token{Type: RPAREN, Literal: ")", Line: l.line, Column: l.column}
+	case '{':
+		tok = Token{Type: LBRACE, Literal: "{", Line: l.line, Column: l.column}
+	case '}':
+		tok = Token{Type: RBRACE, Literal: "}", Line: l.line, Column: l.column}
+	case '[':
+		tok = Token{Type: LBRACKET, Literal: "[", Line: l.line, Column: l.column}
+	case ']':
+		tok = Token{Type: RBRACKET, Literal: "]", Line: l.line, Column: l.column}
+	case ',':
+		tok = Token{Type: COMMA, Literal: ",", Line: l.line, Column: l.column}
+	case '.':
+		tok = Token{Type: DOT, Literal: ".", Line: l.line, Column: l.column}
+	case ':':
+		tok = Token{Type: COLON, Literal: ":", Line: l.line, Column: l.column}
+	case ';':
+		tok = Token{Type: SEMICOLON, Literal: ";", Line: l.line, Column: l.column}
+	case '"':
+		tok.Literal = l.readString()
+		tok.Type = STRING
+		tok.Line = l.line
+		tok.Column = l.column
+		return tok
 	case 0:
 		tok = Token{Type: EOF, Literal: "", Line: l.line, Column: l.column}
 	default:
@@ -114,6 +202,26 @@ func (l *Lexer) NextToken() Token {
 
 	l.readChar()
 	return tok
+}
+
+// peekChar looks at the next character without advancing
+func (l *Lexer) peekChar() rune {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return rune(l.input[l.readPosition])
+}
+
+// readString reads a string literal
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+		if l.ch == '"' || l.ch == 0 {
+			break
+		}
+	}
+	return l.input[position:l.position]
 }
 
 // readIdentifier reads an identifier
@@ -140,6 +248,10 @@ func (l *Lexer) skipWhitespace() {
 		if l.ch == '\n' {
 			l.line++
 			l.column = 0
+			// Track indentation
+			l.indentLevel = 0
+		} else if l.ch == ' ' || l.ch == '\t' {
+			l.indentLevel++
 		}
 		l.readChar()
 	}
@@ -162,6 +274,34 @@ func (l *Lexer) lookupIdentifier(ident string) TokenType {
 		return TRUE
 	case "असत्य":
 		return FALSE
+	case "कार्य":
+		return FUNCTION
+	case "फिर्ता":
+		return RETURN
+	case "ब्रेक":
+		return BREAK
+	case "जारी":
+		return CONTINUE
+	case "मा":
+		return IN
+	case "लागि":
+		return FOR
+	case "जबसम्म":
+		return WHILE
+	case "वर्ग":
+		return CLASS
+	case "नयाँ":
+		return NEW
+	case "यो":
+		return THIS
+	case "माथिल्लो":
+		return SUPER
+	case "आयात":
+		return IMPORT
+	case "बाट":
+		return FROM
+	case "जस्तो":
+		return AS
 	default:
 		return IDENT
 	}
