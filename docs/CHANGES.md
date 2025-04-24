@@ -13,64 +13,105 @@
 ├── examples/            # Example programs
 ├── docs/               # Documentation
 ├── tests/              # Test files
+├── bin/                # Build output directory
+├── Makefile           # Build automation
 └── go.mod             # Go module definition
 ```
 
 ## Recent Changes
 
-### 1. Package Structure Fix
-- Fixed the package structure to follow Go's standard layout
-- Corrected the main package declaration in `cmd/nepali/main.go`
-- Aligned import paths with the module name in `go.mod`
+### 1. Build and Installation System
+The project now uses a robust build and installation system with the following components:
 
-### 2. Module Configuration
-The project now uses the following module configuration in `go.mod`:
-```go
-module github.com/SunilNeupane77/nepali
+#### Makefile Updates
+```makefile
+# Binary name
+BINARY_NAME=nepali
 
-go 1.21
+# Build directory
+BUILD_DIR=bin
 
-require (
-    github.com/stretchr/testify v1.8.4
-)
-
-replace github.com/SunilNeupane77/nepali => ./
+# Installation directory
+INSTALL_DIR=/usr/local/bin
 ```
 
-### 3. Main Package Updates
-The main package (`cmd/nepali/main.go`) has been updated to:
-- Use the correct package name (`package main`)
-- Import the lexer package with the correct path
-- Provide a simple command-line interface for the interpreter
+Key features:
+- Automated build process
+- Proper installation to system directories
+- Clean and uninstall capabilities
+- Installation verification
+- Error handling and checks
 
-### 4. Build Process
-The project can now be built using:
-```bash
-go build -o nepali cmd/nepali/main.go
+#### Build Process
+The build process now follows these steps:
+1. Creates a `bin` directory if it doesn't exist
+2. Builds the binary with proper Go flags
+3. Places the binary in the `bin` directory
+4. Verifies the build was successful
+
+#### Installation Process
+The installation process includes:
+1. Building the binary (if not already built)
+2. Copying to system directory with proper permissions
+3. Verifying the installation
+4. Providing clear error messages if something fails
+
+### 2. Git Configuration
+Updated `.gitignore` to handle build artifacts properly:
+```gitignore
+# Allow main binary but ignore other bin contents
+bin/*
+!bin/.gitkeep
 ```
+
+Changes include:
+- Keeping the `bin` directory in git
+- Ignoring build artifacts
+- Maintaining a clean repository
+- Allowing the main binary to be tracked if needed
+
+### 3. Directory Structure
+Added new directories and files:
+- `bin/` directory for build outputs
+- `.gitkeep` file to maintain directory structure
+- Updated documentation in `docs/`
 
 ## How to Use
 
 ### Building the Project
-1. Clone the repository:
+1. Initialize the project:
 ```bash
-git clone https://github.com/SunilNeupane77/nepali.git
-cd nepali
+make init
 ```
 
 2. Build the project:
 ```bash
-go build -o nepali cmd/nepali/main.go
+make build
 ```
 
-### Running the Interpreter
+3. Install the program:
 ```bash
-./nepali <filename>
+make install
+```
+
+### Available Make Commands
+- `make build`: Builds the project
+- `make install`: Installs the program
+- `make uninstall`: Removes the program
+- `make clean`: Cleans build artifacts
+- `make test`: Runs tests
+- `make verify`: Verifies installation
+- `make init`: Initializes project structure
+
+### Running the Program
+After installation:
+```bash
+nepali <filename>
 ```
 
 Example:
 ```bash
-./nepali examples/hello.nep
+nepali examples/hello.nep
 ```
 
 ## Development Guidelines
@@ -91,7 +132,7 @@ Example:
 - Write tests for new features
 - Run tests using:
 ```bash
-go test ./...
+make test
 ```
 
 ## Future Improvements

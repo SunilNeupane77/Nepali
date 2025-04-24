@@ -4,8 +4,9 @@
 *.dll
 *.so
 *.dylib
-nepali
-bin/
+# nepali  # Commented out to allow the main binary
+bin/*
+!bin/.gitkeep
 
 # Test binary, built with `go test -c`
 *.test
@@ -83,7 +84,4 @@ coverage.txt
 coverage.html
 
 # Dependency lock files (uncomment if you want to ignore them)
-# go.sum
-
-# Binary output directory
-bin/ 
+# go.sum 

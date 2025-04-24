@@ -31,8 +31,9 @@ A programming language designed for Nepali speakers, making coding more accessib
 ### Prerequisites
 - Go 1.21 or later
 - Git
+- Make (for build automation)
 
-### Steps
+### Quick Installation
 
 1. Clone the repository:
 ```bash
@@ -40,20 +41,44 @@ git clone https://github.com/SunilNeupane77/nepali.git
 cd nepali
 ```
 
-2. Install dependencies:
+2. Initialize the project:
 ```bash
-go mod download
+make init
 ```
 
-3. Build the compiler:
+3. Build and install:
 ```bash
-go build -o nepali cmd/nepali/main.go
+make install
 ```
 
-4. Add to PATH:
+This will:
+- Create necessary directories
+- Build the binary
+- Install it to your system
+- Verify the installation
+
+### Manual Installation
+
+If you prefer to install manually:
+
+1. Build the project:
 ```bash
-sudo mv nepali /usr/local/bin/
+make build
 ```
+
+2. Install the binary:
+```bash
+sudo cp bin/nepali /usr/local/bin/
+```
+
+### Verifying Installation
+
+To verify the installation:
+```bash
+make verify
+```
+
+You should see: "nepali is installed and available in PATH"
 
 ## Quick Start
 
@@ -148,65 +173,77 @@ Check the `examples` directory for sample programs:
 .
 ├── cmd/
 │   └── nepali/           # Main executable
+│       └── main.go       # Entry point for the interpreter
 ├── internal/
 │   ├── lexer/           # Lexical analyzer
 │   ├── parser/          # Parser implementation
-│   └── interpreter/     # Interpreter/compiler
+│   └── ast/             # Abstract Syntax Tree definitions
 ├── examples/            # Example programs
 ├── docs/               # Documentation
 ├── tests/              # Test files
-└── Makefile           # Build automation
+├── bin/                # Build output directory
+├── Makefile           # Build automation
+└── go.mod             # Go module definition
 ```
 
-### Development Commands
+### Available Make Commands
 
+- `make init`: Initialize project structure
+- `make build`: Build the project
+- `make install`: Install the program
+- `make uninstall`: Remove the program
+- `make clean`: Clean build artifacts
+- `make test`: Run tests
+- `make verify`: Verify installation
+
+### Development Setup
+
+1. Initialize the project:
 ```bash
-# Initialize project
 make init
+```
 
-# Build project
+2. Build the project:
+```bash
 make build
+```
 
-# Install package
-make install
-
-# Run tests
+3. Run tests:
+```bash
 make test
-
-# Clean build artifacts
-make clean
-
-# Verify installation
-make verify
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Directory Not Found**
+1. **Installation Fails**
    ```bash
-   stat /path/to/nepali/cmd/nepali: directory not found
-   make: *** [Makefile:7: install] Error 1
+   Error: Binary not found. Run 'make build' first.
    ```
    Solution:
    ```bash
-   make init
-   make clean
    make build
    make install
    ```
 
-2. **Installation Fails**
+2. **Command Not Found**
    ```bash
-   go: downloading github.com/SunilNeupane77/nepali v0.0.0-20250424065828-ef2424ae4aba
-   go: github.com/SunilNeupane77/nepali/cmd/nepali@latest: module github.com/SunilNeupane77/nepali@latest found, but does not contain package
+   nepali: command not found
    ```
    Solution:
    ```bash
-   go mod tidy
-   make clean
+   make verify
    make install
+   ```
+
+3. **Permission Denied**
+   ```bash
+   Permission denied: /usr/local/bin/nepali
+   ```
+   Solution: Run with sudo:
+   ```bash
+   sudo make install
    ```
 
 ## Contributing

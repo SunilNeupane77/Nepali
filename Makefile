@@ -1,44 +1,55 @@
-.PHONY: build install test clean init verify setup
+.PHONY: all build clean install uninstall test
 
-# Build the project
+# Binary name
+BINARY_NAME=nepali
+
+# Build directory
+BUILD_DIR=bin
+
+# Installation directory
+INSTALL_DIR=/usr/local/bin
+
+all: build
+
 build:
-	@echo "Building nepali..."
-	@mkdir -p bin
-	go build -o bin/nepali cmd/nepali/main.go
+	@echo "Building $(BINARY_NAME)..."
+	@mkdir -p $(BUILD_DIR)
+	go build -o $(BUILD_DIR)/$(BINARY_NAME) cmd/nepali/main.go
 
-# Install the project
-install:
-	@echo "Installing nepali..."
-	@mkdir -p $(shell go env GOPATH)/bin
-	go install ./cmd/nepali
+clean:
+	@echo "Cleaning..."
+	@rm -rf $(BUILD_DIR)
+	@go clean
 
-# Run tests
+install: build
+	@echo "Installing $(BINARY_NAME)..."
+	@if [ -f $(BUILD_DIR)/$(BINARY_NAME) ]; then \
+		sudo cp $(BUILD_DIR)/$(BINARY_NAME) $(INSTALL_DIR)/; \
+		echo "Installation complete. You can now run '$(BINARY_NAME)' from anywhere."; \
+	else \
+		echo "Error: Binary not found. Run 'make build' first."; \
+		exit 1; \
+	fi
+
+uninstall:
+	@echo "Uninstalling $(BINARY_NAME)..."
+	@sudo rm -f $(INSTALL_DIR)/$(BINARY_NAME)
+	@echo "Uninstallation complete."
+
 test:
 	@echo "Running tests..."
-	go test ./...
+	@go test ./...
 
-# Clean build artifacts
-clean:
-	@echo "Cleaning build artifacts..."
-	rm -rf bin/
-	go clean
-
-# Initialize the project
+# Create bin directory and .gitkeep file
 init:
-	@echo "Initializing project..."
-	go mod init github.com/SunilNeupane77/nepali
-	go mod tidy
+	@mkdir -p $(BUILD_DIR)
+	@touch $(BUILD_DIR)/.gitkeep
 
 # Verify installation
 verify:
-	@echo "Verifying installation..."
-	which nepali || echo "nepali not found in PATH"
-	nepali --version || echo "nepali command not working"
-
-# Setup development environment
-setup:
-	@echo "Setting up development environment..."
-	@mkdir -p cmd/nepali internal/lexer internal/parser internal/interpreter examples docs tests bin
-	@go mod init github.com/SunilNeupane77/nepali
-	@go mod tidy
-	@echo "Development environment setup complete" 
+	@if command -v $(BINARY_NAME) >/dev/null 2>&1; then \
+		echo "$(BINARY_NAME) is installed and available in PATH"; \
+	else \
+		echo "$(BINARY_NAME) is not installed or not in PATH"; \
+		exit 1; \
+	fi 
