@@ -27,6 +27,6 @@ func main() {
 		if tok.Type == lexer.EOF {
 			break
 		}
-		fmt.Printf("%+v\n", tok)
+		fmt.Printf("Token{Type: %s, Literal: %q}\n", tok.Type, tok.Literal)
 	}
 }
