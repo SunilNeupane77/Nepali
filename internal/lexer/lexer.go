@@ -1,9 +1,8 @@
 // Package lexer implements the lexical analyzer for the Nepali programming language
 package lexer
 
-import (
-	"unicode"
-)
+import "unicode"
+
 
 // TokenType represents the type of a token
 type TokenType string
@@ -20,9 +19,9 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers and literals
-	IDENT  = "IDENT"  // add, foobar, x, y, ...
-	INT    = "INT"    // 1343456
-	STRING = "STRING" // "foobar"
+	IDENT  = "IDENT"
+	INT    = "INT"
+	STRING = "STRING"
 
 	// Operators
 	ASSIGN   = "="
@@ -51,25 +50,25 @@ const (
 	RBRACKET = "]"
 
 	// Keywords
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
-	VAR      = "VAR"   // संख्या
-	PRINT    = "PRINT" // लेख्नुहोस्
+	FUNCTION = "फन"
+	LET      = "लेट"
+	TRUE     = "सत्य"
+	FALSE    = "मिथ्या"
+	IF       = "यदि"
+	ELSE     = "अन्यथा"
+	RETURN   = "प्रतिफल"
+	VAR      = "संख्या"
+	PRINT    = "लेख्नुहोस्"
 )
 
 var keywords = map[string]TokenType{
-	"fn":         FUNCTION,
-	"let":        LET,
-	"true":       TRUE,
-	"false":      FALSE,
-	"if":         IF,
-	"else":       ELSE,
-	"return":     RETURN,
+	"फन":         FUNCTION,
+	"लेट":        LET,
+	"सत्य":       TRUE,
+	"मिथ्या":      FALSE,
+	"यदि":         IF,
+	"अन्यथा":       ELSE,
+	"प्रतिफल":     RETURN,
 	"संख्या":     VAR,
 	"लेख्नुहोस्": PRINT,
 }
@@ -153,11 +152,11 @@ func (l *Lexer) NextToken() Token {
 		tok.Literal = ""
 		tok.Type = EOF
 	default:
-		if isLetter(l.ch) {
+		if l.isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = lookupIdent(tok.Literal)
 			return tok
-		} else if isDigit(l.ch) {
+		} else if l.isDigit(l.ch) {
 			tok.Type = INT
 			tok.Literal = l.readNumber()
 			return tok
@@ -195,7 +194,7 @@ func (l *Lexer) peekChar() rune {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	for isLetter(l.ch) {
+	for l.isLetter(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -203,7 +202,7 @@ func (l *Lexer) readIdentifier() string {
 
 func (l *Lexer) readNumber() string {
 	position := l.position
-	for isDigit(l.ch) {
+	for l.isDigit(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -220,12 +219,19 @@ func (l *Lexer) readString() string {
 	return l.input[position:l.position]
 }
 
-func isLetter(ch rune) bool {
-	return unicode.IsLetter(ch) || ch == '_'
+func (l *Lexer) isLetter(ch rune) bool {
+	// Check for both English and Nepali letters
+	return unicode.IsLetter(ch) || 
+		('अ' <= ch && ch <= 'ह') || 
+		('ऀ' <= ch && ch <= 'ॐ') || 
+		('०' <= ch && ch <= '९') || 
+		ch == '_'
 }
 
-func isDigit(ch rune) bool {
-	return unicode.IsDigit(ch)
+func (l *Lexer) isDigit(ch rune) bool {
+	// Check for both Arabic and Devanagari numerals
+	return ('0' <= ch && ch <= '9') ||
+		('०' <= ch && ch <= '९')
 }
 
 func lookupIdent(ident string) TokenType {
